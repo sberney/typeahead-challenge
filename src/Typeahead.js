@@ -74,14 +74,14 @@ class Suggestion_ extends React.Component {
   }
 
   onKeyDown(e) {
-    const { onTabForward, onEscape, onEnter } = this.props;
+    const { onTabForward, onEscape, onSelect } = this.props;
     if (isTabForward(e)) onTabForward(e);
     if (isEscape(e)) onEscape(e);
-    if (isEnter(e)) onEnter(e);
+    if (isEnter(e)) onSelect();
   }
 
   render() {
-    const { children, className, innerRef } = this.props;
+    const { children, className, innerRef, onSelect } = this.props;
 
     // tabIndex makes these divs focusable.
     return (
@@ -89,7 +89,8 @@ class Suggestion_ extends React.Component {
         ref={innerRef}
         tabIndex="0"
         className={classnames(className, 'suggestion')}
-        onKeyDown={this.onKeyDown}>
+        onKeyDown={this.onKeyDown}
+        onClick={onSelect}>
         {children}
       </div>
     );
@@ -198,7 +199,7 @@ export class Typeahead extends React.Component {
                     this.setState({ escaped: true });
                     this.input.focus();
                   }}
-                  onEnter={e => {
+                  onSelect={() => {
                     this.setState({ userInput: start + rest, escaped: true });
                     this.input.focus();
                   }}>
