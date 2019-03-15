@@ -77,6 +77,10 @@ class Suggestion_ extends React.Component {
   }
 
   onKeyDown(e) {
+    // arguably, differentiating between these categories of events here
+    // (instead of doing it in the Typeahead render() function)
+    // makes the Typeahead render() logic a little cleaner.
+    //
     const { onTabForward, onEscape, onSelect } = this.props;
     if (isTabForward(e)) onTabForward(e);
     if (isEscape(e)) onEscape(e);
@@ -102,6 +106,7 @@ class Suggestion_ extends React.Component {
 
 /**
  * The only true Typeahead.
+ * Renders an input box, followed by a dropdown list of matching options.
  *
  * @param {string[]} list - typeahead completion candidates
  * @param {string} className - css class to apply on this typeahead
@@ -182,9 +187,6 @@ export class Typeahead extends React.Component {
     });
   }
 
-  /**
-   * Renders an input box, followed by a dropdown list of matching options.
-   */
   render() {
     const { className } = this.props;
     const { userInput, filteredCandidates, escaped } = this.state;
