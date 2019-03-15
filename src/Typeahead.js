@@ -4,7 +4,6 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import set from 'lodash/fp/set';
@@ -76,24 +75,29 @@ const isTabBackward = e => {
  * Represents a typeahead suggestion
  */
 class Suggestion extends React.Component {
-  onKeyDown(e) {
-    if (isTabForward(e)) {
-      //
-    }
+  constructor(props) {
+    super(props);
+    this.onKeyDown = this.onKeyDown.bind(this);
+  }
 
-    if (isTabBackward(e)) {
-      //
+  onKeyDown(e) {
+    const { isLast, gotoStart } = this.props;
+
+    if (isLast && isTabForward(e)) {
+      // cycle back to the beginning of the list
+      e.preventDefault();
+      gotoStart();
     }
   }
 
   render() {
-    const { children, className, focused } = this.props;
+    const { children, className, isLast } = this.props;
 
     // tabIndex makes these divs focusable.
     return (
       <div
         tabIndex="0"
-        className={classnames(className, 'suggestion', { focused })}>
+        className={classnames(className, 'suggestion', { focused: isLast })}>
         {children}
       </div>
     );
@@ -106,6 +110,7 @@ class Suggestion extends React.Component {
 export class Typeahead extends React.Component {
   constructor(props) {
     super(props);
+    this.firstCandidateRef = React.createRef();
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onChange = this.onChange.bind(this);
   }
@@ -118,8 +123,9 @@ export class Typeahead extends React.Component {
   };
 
   state = {
-    debug: 'nothing yet!',
+    /** @type {string} - Current value of the Typeahead input */
     userInput: '',
+    /** @type {Candidate[]} - Candidate matches for current input */
     filteredCandidates: []
   };
 
@@ -129,7 +135,7 @@ export class Typeahead extends React.Component {
    * @ignore
    */
   componentDidMount() {
-    //this.input.focus(); // todo -- enable. codesandbox makes this troublesome for development.
+    this.input.focus();
     // todo -- when clicking outside of the typeahead, we need to close the typeahead (or: it loses focus)
     // We could bind to the document -- document.addEventListener + document.removeEventListener --
     // seeing as we need to monitor clicks everywhere.
@@ -207,7 +213,10 @@ export class Typeahead extends React.Component {
           />
           {goodInput
             ? filteredCandidates.map(({ start, rest }, idx) => (
-                <Suggestion key={idx}>
+                <Suggestion
+                  key={idx}
+                  isLast={idx === filteredCandidates.length - 1}
+                  gotoStart={() => console.log('here')}>
                   <b>{start}</b>
                   {rest}
                 </Suggestion>

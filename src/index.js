@@ -7,8 +7,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
 
 import { Typeahead } from './Typeahead';
 import { StopsPropagation } from './StopsPropagation';
@@ -58,10 +56,9 @@ import { StopsPropagation } from './StopsPropagation';
 const App = () => (
   <div>
     <p>
-      <div>
-        <StopsPropagation />
-      </div>
-      <div>Before typeahead</div>
+      <StopsPropagation />
+      <br />
+      <span>Before typeahead</span>
     </p>
     <Typeahead className="App" list={carBrands} />
     <p tabIndex="0">After typeahead (focusable)</p>
