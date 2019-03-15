@@ -1,4 +1,10 @@
 /**
+ * Repository for various functions which detect keypresses.
+ *
+ * @module detectKeys
+ */
+
+/**
  * Detects whether an event was a tab forward
  * @param {SyntheticEvent} e - React Keyboard Event
  */

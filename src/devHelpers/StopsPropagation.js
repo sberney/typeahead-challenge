@@ -1,3 +1,8 @@
+/**
+ * Exports the component StopsPropagation
+ * @module StopsPropagation
+ */
+
 import React from 'react';
 
 /**
