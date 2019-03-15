@@ -188,11 +188,13 @@ export class Typeahead extends React.Component {
   }
 
   render() {
+    // future work -- separate the SuggestionBox code below into a component
+
     const { className } = this.props;
     const { userInput, filteredCandidates, escaped } = this.state;
 
-    const firstCandidateRef = this.firstCandidateRef;
-    const goodInput = !isEmptyOrWhitespace(userInput);
+    const isInputGood = !isEmptyOrWhitespace(userInput),
+      isSuggestionBoxShown = isInputGood && !escaped;
 
     return (
       <div className={classnames(className, 'suggestion-box')}>
@@ -205,17 +207,17 @@ export class Typeahead extends React.Component {
           onKeyDown={this.onKeyDown}
           type="text"
         />
-        {goodInput && !escaped
+        {isSuggestionBoxShown
           ? filteredCandidates.map(({ start, rest }, idx) => (
               <Suggestion
                 key={idx}
                 ref={idx === 0 ? this.firstCandidateRef : null}
                 onTabForward={e => {
                   const isLast = idx === filteredCandidates.length - 1;
-                  if (isLast && firstCandidateRef.current) {
-                    // cycle back to the beginning of the list
+                  if (isLast && this.firstCandidateRef.current) {
+                    // cycles back to the beginning of the list
                     e.preventDefault();
-                    firstCandidateRef.current.focus();
+                    this.firstCandidateRef.current.focus();
                   }
                 }}
                 onEscape={e => {
