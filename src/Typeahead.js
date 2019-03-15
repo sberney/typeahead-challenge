@@ -72,9 +72,18 @@ const isTabBackward = e => {
 };
 
 /**
- * Represents a typeahead suggestion
+ * Represents a typeahead suggestion.
+ * Wraps Suggestion_, allowing Suggestion ref property name
+ * to be "ref" as normal, instead of "innerRef".
+ *
+ * @param {boolean} isLast - whether this is the last listed suggestion
+ * @param {Function} gotoStart - callback used to notify the hierarchy when we've tried to tab beyond the last listed suggestion
  */
-class Suggestion extends React.Component {
+const Suggestion = React.forwardRef((props, ref) => (
+  <Suggestion_ innerRef={ref} {...props} />
+));
+
+class Suggestion_ extends React.Component {
   constructor(props) {
     super(props);
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -91,13 +100,15 @@ class Suggestion extends React.Component {
   }
 
   render() {
-    const { children, className, isLast } = this.props;
+    const { children, className, isLast, innerRef } = this.props;
 
     // tabIndex makes these divs focusable.
     return (
       <div
+        ref={innerRef}
         tabIndex="0"
-        className={classnames(className, 'suggestion', { focused: isLast })}>
+        className={classnames(className, 'suggestion')}
+        onKeyDown={this.onKeyDown}>
         {children}
       </div>
     );
@@ -196,6 +207,7 @@ export class Typeahead extends React.Component {
     const { className } = this.props;
     const { userInput, filteredCandidates } = this.state;
 
+    const firstCandidateRef = this.firstCandidateRef;
     const goodInput = !isEmptyOrWhitespace(userInput);
 
     return (
@@ -215,8 +227,13 @@ export class Typeahead extends React.Component {
             ? filteredCandidates.map(({ start, rest }, idx) => (
                 <Suggestion
                   key={idx}
+                  ref={idx === 0 ? this.firstCandidateRef : null}
                   isLast={idx === filteredCandidates.length - 1}
-                  gotoStart={() => console.log('here')}>
+                  gotoStart={() => {
+                    debugger;
+                    firstCandidateRef.current &&
+                      firstCandidateRef.current.focus();
+                  }}>
                   <b>{start}</b>
                   {rest}
                 </Suggestion>
