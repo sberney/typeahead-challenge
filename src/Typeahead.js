@@ -193,45 +193,42 @@ export class Typeahead extends React.Component {
     const goodInput = !isEmptyOrWhitespace(userInput);
 
     return (
-      <div>
-        <div>Debug output: len {filteredCandidates.length}</div>
-        <div className={classnames(className, 'suggestion-box')}>
-          <input
-            value={userInput}
-            ref={input => {
-              this.input = input;
-            }}
-            onChange={this.onChange}
-            onKeyDown={this.onKeyDown}
-            type="text"
-          />
-          {goodInput && !escaped
-            ? filteredCandidates.map(({ start, rest }, idx) => (
-                <Suggestion
-                  key={idx}
-                  ref={idx === 0 ? this.firstCandidateRef : null}
-                  onTabForward={e => {
-                    const isLast = idx === filteredCandidates.length - 1;
-                    if (isLast && firstCandidateRef.current) {
-                      // cycle back to the beginning of the list
-                      e.preventDefault();
-                      firstCandidateRef.current.focus();
-                    }
-                  }}
-                  onEscape={e => {
-                    this.setState({ escaped: true });
-                    this.input.focus();
-                  }}
-                  onSelect={() => {
-                    this.setState({ userInput: start + rest, escaped: true });
-                    this.input.focus();
-                  }}>
-                  <b>{start}</b>
-                  {rest}
-                </Suggestion>
-              ))
-            : null}
-        </div>
+      <div className={classnames(className, 'suggestion-box')}>
+        <input
+          value={userInput}
+          ref={input => {
+            this.input = input;
+          }}
+          onChange={this.onChange}
+          onKeyDown={this.onKeyDown}
+          type="text"
+        />
+        {goodInput && !escaped
+          ? filteredCandidates.map(({ start, rest }, idx) => (
+              <Suggestion
+                key={idx}
+                ref={idx === 0 ? this.firstCandidateRef : null}
+                onTabForward={e => {
+                  const isLast = idx === filteredCandidates.length - 1;
+                  if (isLast && firstCandidateRef.current) {
+                    // cycle back to the beginning of the list
+                    e.preventDefault();
+                    firstCandidateRef.current.focus();
+                  }
+                }}
+                onEscape={e => {
+                  this.setState({ escaped: true });
+                  this.input.focus();
+                }}
+                onSelect={() => {
+                  this.setState({ userInput: start + rest, escaped: true });
+                  this.input.focus();
+                }}>
+                <b>{start}</b>
+                {rest}
+              </Suggestion>
+            ))
+          : null}
       </div>
     );
   }
