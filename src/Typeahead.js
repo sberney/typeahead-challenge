@@ -110,8 +110,10 @@ export class Typeahead extends React.Component {
   constructor(props) {
     super(props);
     this.firstCandidateRef = React.createRef();
+
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.documentClickHandler = this.documentClickHandler.bind(this);
   }
 
   static propTypes = {
@@ -131,16 +133,29 @@ export class Typeahead extends React.Component {
   };
 
   /**
+   * @this Document
+   * @param {MouseEvent} e - Click Event
+   */
+  documentClickHandler(e) {
+    this.setState({ escaped: true });
+    // todo -- when clicking outside of the typeahead, we need to close the typeahead (or: it loses focus)
+    // We could bind to the document -- document.addEventListener + document.removeEventListener --
+    // seeing as we need to monitor clicks everywhere.
+    // But, what about manually handled clicks with stopPropagation()?
+  }
+
+  /**
    * Automatically focuses the Typeahead;
    * Binds necessary keypress and click listeners.
    * @ignore
    */
   componentDidMount() {
     this.input.focus();
-    // todo -- when clicking outside of the typeahead, we need to close the typeahead (or: it loses focus)
-    // We could bind to the document -- document.addEventListener + document.removeEventListener --
-    // seeing as we need to monitor clicks everywhere.
-    // But, what about manually handled clicks with stopPropagation()?
+    document.addEventListener('click', this.documentClickHandler);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.documentClickHandler);
   }
 
   onKeyDown(e) {
