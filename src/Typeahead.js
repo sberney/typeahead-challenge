@@ -67,6 +67,9 @@ const Suggestion = React.forwardRef((props, ref) => (
   <Suggestion_ innerRef={ref} {...props} />
 ));
 
+/**
+ * @see Suggestion
+ */
 class Suggestion_ extends React.Component {
   constructor(props) {
     super(props);
@@ -98,7 +101,10 @@ class Suggestion_ extends React.Component {
 }
 
 /**
- * The only true Typeahead
+ * The only true Typeahead.
+ *
+ * @param {string[]} list - typeahead completion candidates
+ * @param {string} className - css class to apply on this typeahead
  */
 export class Typeahead extends React.Component {
   constructor(props) {
@@ -159,8 +165,6 @@ export class Typeahead extends React.Component {
    * Renders an input box, followed by a dropdown list of matching options.
    * Todo -- ensure that dropdown does not force items below it down on the page.
    * @ignore
-   * @param {string[]} list -- typeahead completion candidates
-   * @param {string} className -- css class to apply on this typeahead
    */
   render() {
     const { className } = this.props;
