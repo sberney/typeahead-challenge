@@ -30,7 +30,7 @@ export class StopsPropagation extends React.Component {
 
     return (
       <button onClick={this.onClick}>
-        <span>{`You have clicked this ${nclicks} times`}</span>
+        <span>{`You have clicked this ${nclicks} times (this calls stopPropagation())`}</span>
       </button>
     );
   }
