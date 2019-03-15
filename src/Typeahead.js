@@ -133,38 +133,44 @@ export class Typeahead extends React.Component {
   };
 
   /**
-   * @this Document
+   * Closes the suggestion box when any clicks occur.
    * @param {MouseEvent} e - Click Event
+   * @this Document
    */
   documentClickHandler(e) {
     this.setState({ escaped: true });
-    // todo -- when clicking outside of the typeahead, we need to close the typeahead (or: it loses focus)
-    // We could bind to the document -- document.addEventListener + document.removeEventListener --
-    // seeing as we need to monitor clicks everywhere.
-    // But, what about manually handled clicks with stopPropagation()?
   }
 
   /**
    * Automatically focuses the Typeahead;
-   * Binds necessary keypress and click listeners.
-   * @ignore
+   * Binds document click listeners.
    */
   componentDidMount() {
     this.input.focus();
     document.addEventListener('click', this.documentClickHandler);
   }
 
+  /**
+   * Unbinds document click listeners
+   */
   componentWillUnmount() {
     document.removeEventListener('click', this.documentClickHandler);
   }
 
+  /**
+   * Closes the suggestion box when Escape is pressed (while input is focused).
+   * @param {SyntheticEvent} e - React Keyboard event
+   */
   onKeyDown(e) {
-    // escape -- close the suggestion box
     if (isEscape(e)) {
       this.setState({ escaped: true });
     }
   }
 
+  /**
+   * Updates the Typeahead state when the user changes the input.
+   * @param {SyntheticEvent} e - input change event
+   */
   onChange(e) {
     const { list } = this.props;
     const userInput = e.target.value;
@@ -178,8 +184,6 @@ export class Typeahead extends React.Component {
 
   /**
    * Renders an input box, followed by a dropdown list of matching options.
-   * Todo -- ensure that dropdown does not force items below it down on the page.
-   * @ignore
    */
   render() {
     const { className } = this.props;
