@@ -30,10 +30,6 @@
   background-color: white;
 }
 
-.suggestion.focused {
-  color: red;
-}
-
 .suggestion:hover {
   background-color: grey;
   color: white;
