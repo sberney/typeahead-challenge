@@ -76,8 +76,7 @@ const isTabBackward = e => {
  * Wraps Suggestion_, allowing Suggestion ref property name
  * to be "ref" as normal, instead of "innerRef".
  *
- * @param {boolean} isLast - whether this is the last listed suggestion
- * @param {Function} gotoStart - callback used to notify the hierarchy when we've tried to tab beyond the last listed suggestion
+ * @param {Function} onTabForward - callback fired when a forward tab press is observed
  */
 const Suggestion = React.forwardRef((props, ref) => (
   <Suggestion_ innerRef={ref} {...props} />
@@ -90,17 +89,15 @@ class Suggestion_ extends React.Component {
   }
 
   onKeyDown(e) {
-    const { isLast, gotoStart } = this.props;
+    const { onTabForward } = this.props;
 
-    if (isLast && isTabForward(e)) {
-      // cycle back to the beginning of the list
-      e.preventDefault();
-      gotoStart();
+    if (isTabForward(e)) {
+      onTabForward(e);
     }
   }
 
   render() {
-    const { children, className, isLast, innerRef } = this.props;
+    const { children, className, innerRef } = this.props;
 
     // tabIndex makes these divs focusable.
     return (
@@ -228,11 +225,13 @@ export class Typeahead extends React.Component {
                 <Suggestion
                   key={idx}
                   ref={idx === 0 ? this.firstCandidateRef : null}
-                  isLast={idx === filteredCandidates.length - 1}
-                  gotoStart={() => {
-                    debugger;
-                    firstCandidateRef.current &&
+                  onTabForward={e => {
+                    const isLast = idx === filteredCandidates.length - 1;
+                    if (isLast && firstCandidateRef.current) {
+                      // cycle back to the beginning of the list
+                      e.preventDefault();
                       firstCandidateRef.current.focus();
+                    }
                   }}>
                   <b>{start}</b>
                   {rest}
