@@ -203,32 +203,34 @@ export class Typeahead extends React.Component {
           onKeyDown={this.onKeyDown}
           type="text"
         />
-        {isSuggestionBoxShown
-          ? filteredCandidates.map(({ start, rest }, idx) => (
-              <Suggestion
-                key={idx}
-                ref={idx === 0 ? this.firstCandidateRef : null}
-                onTabForward={e => {
-                  const isLast = idx === filteredCandidates.length - 1;
-                  if (isLast && this.firstCandidateRef.current) {
-                    // cycles back to the beginning of the list
-                    e.preventDefault();
-                    this.firstCandidateRef.current.focus();
-                  }
-                }}
-                onEscape={e => {
-                  this.setState({ escaped: true });
-                  this.input.focus();
-                }}
-                onSelect={() => {
-                  this.setState({ userInput: start + rest, escaped: true });
-                  this.input.focus();
-                }}>
-                <b>{start}</b>
-                {rest}
-              </Suggestion>
-            ))
-          : null}
+        <div className="suggestion-box">
+          {isSuggestionBoxShown
+            ? filteredCandidates.map(({ start, rest }, idx) => (
+                <Suggestion
+                  key={idx}
+                  ref={idx === 0 ? this.firstCandidateRef : null}
+                  onTabForward={e => {
+                    const isLast = idx === filteredCandidates.length - 1;
+                    if (isLast && this.firstCandidateRef.current) {
+                      // cycles back to the beginning of the list
+                      e.preventDefault();
+                      this.firstCandidateRef.current.focus();
+                    }
+                  }}
+                  onEscape={e => {
+                    this.setState({ escaped: true });
+                    this.input.focus();
+                  }}
+                  onSelect={() => {
+                    this.setState({ userInput: start + rest, escaped: true });
+                    this.input.focus();
+                  }}>
+                  <b>{start}</b>
+                  {rest}
+                </Suggestion>
+              ))
+            : null}
+        </div>
       </div>
     );
   }

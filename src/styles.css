@@ -17,6 +17,11 @@
   width: 100%;
 }
 
+.suggestion-box {
+  position: absolute;
+  width: 100%;
+}
+
 .suggestion {
   text-align: left;
   cursor: pointer;
@@ -25,7 +30,6 @@
   border-right: 1px solid black;
   border-bottom: 1px solid black;
   width: 100%;
-  position: relative;
   z-index: 99;
   background-color: white;
 }
