@@ -134,7 +134,9 @@ export class Typeahead extends React.Component {
     /** @type {string} - Current value of the Typeahead input */
     userInput: '',
     /** @type {Candidate[]} - Candidate matches for current input */
-    filteredCandidates: []
+    filteredCandidates: [],
+    /** @type {boolean} - Whether user has pressed escape key to close suggestions */
+    escaped: false
   };
 
   /**
@@ -150,24 +152,6 @@ export class Typeahead extends React.Component {
     // But, what about manually handled clicks with stopPropagation()?
   }
 
-  onTab(e) {
-    const hasMatch = !!this.state.filteredCandidates.length;
-
-    // allows default tab focusing behavior when there are no results
-    if (false === hasMatch) return;
-
-    //e.preventDefault(); // a match exists -- no shifting focus
-
-    if (e.shiftKey) {
-      // backwards through results
-      //if ()
-      //this.setState(update('focusIndex', add(-1)));
-    } else {
-      // forwards through the results
-      //this.setState(update('focusIndex', add(1)));
-    }
-  }
-
   onKeyDown(e) {
     // escape -- clears the text entry
     if (e.keyCode === 27) {
@@ -178,11 +162,6 @@ export class Typeahead extends React.Component {
     if (e.keyCode === 13) {
       this.setState({ userInput: 'enter hit' });
     }
-
-    // tab key
-    if (e.keyCode === 9) {
-      this.onTab(e);
-    }
   }
 
   onChange(e) {
@@ -191,7 +170,8 @@ export class Typeahead extends React.Component {
 
     this.setState({
       userInput,
-      filteredCandidates: filterCandidates(list, userInput)
+      filteredCandidates: filterCandidates(list, userInput),
+      escaped: false // the user can never escape auto-complete for more than heartbeat, as pioneered by chrome
     });
   }
 
