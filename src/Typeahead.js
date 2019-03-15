@@ -11,7 +11,7 @@ import update from 'lodash/fp/update';
 import compose from 'lodash/fp/compose';
 import add from 'lodash/fp/add';
 
-import { isTabForward, isTabBackward, isEscape } from './detectKeys';
+import { isTabForward, isEscape, isEnter } from './detectKeys';
 import './styles.css';
 
 const isEmptyOrWhitespace = text => {
@@ -74,9 +74,10 @@ class Suggestion_ extends React.Component {
   }
 
   onKeyDown(e) {
-    const { onTabForward, onEscape } = this.props;
+    const { onTabForward, onEscape, onEnter } = this.props;
     if (isTabForward(e)) onTabForward(e);
     if (isEscape(e)) onEscape(e);
+    if (isEnter(e)) onEnter(e);
   }
 
   render() {
@@ -140,11 +141,6 @@ export class Typeahead extends React.Component {
     if (isEscape(e)) {
       this.setState({ escaped: true });
     }
-
-    // enter -- accept the highlighted entry
-    if (e.keyCode === 13) {
-      this.setState({ userInput: 'enter hit' });
-    }
   }
 
   onChange(e) {
@@ -200,6 +196,10 @@ export class Typeahead extends React.Component {
                   }}
                   onEscape={e => {
                     this.setState({ escaped: true });
+                    this.input.focus();
+                  }}
+                  onEnter={e => {
+                    this.setState({ userInput: start + rest, escaped: true });
                     this.input.focus();
                   }}>
                   <b>{start}</b>

@@ -21,3 +21,11 @@ export const isTabBackward = e => {
 export const isEscape = e => {
   return e.keyCode === 27;
 };
+
+/**
+ * Detects whether an event was an enter press
+ * @param {SyntheticEvent} e - React Keyboard Event
+ */
+export const isEnter = e => {
+  return e.keyCode === 13;
+};
