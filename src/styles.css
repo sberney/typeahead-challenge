@@ -7,11 +7,11 @@
   text-align: center;
 }
 
-.suggestion-box {
+.typeahead {
   position: relative;
 }
 
-.suggestion-box input {
+.typeahead input {
   border: 1px solid black;
   padding: 0.5rem;
   width: 100%;

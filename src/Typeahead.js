@@ -193,7 +193,7 @@ export class Typeahead extends React.Component {
       isSuggestionBoxShown = isInputGood && !escaped;
 
     return (
-      <div className={classnames(className, 'suggestion-box')}>
+      <div className={classnames(className, 'typeahead')}>
         <input
           value={userInput}
           ref={input => {
