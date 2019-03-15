@@ -138,9 +138,9 @@ export class Typeahead extends React.Component {
   }
 
   onKeyDown(e) {
-    // escape -- clears the text entry
-    if (e.keyCode === 27) {
-      this.setState({ userInput: '' });
+    // escape -- close the suggestion box
+    if (isEscape(e)) {
+      this.setState({ escaped: true });
     }
 
     // enter -- accept the highlighted entry
@@ -164,10 +164,12 @@ export class Typeahead extends React.Component {
    * Renders an input box, followed by a dropdown list of matching options.
    * Todo -- ensure that dropdown does not force items below it down on the page.
    * @ignore
+   * @param {string[]} list -- typeahead completion candidates
+   * @param {string} className -- css class to apply on this typeahead
    */
   render() {
     const { className } = this.props;
-    const { userInput, filteredCandidates } = this.state;
+    const { userInput, filteredCandidates, escaped } = this.state;
 
     const firstCandidateRef = this.firstCandidateRef;
     const goodInput = !isEmptyOrWhitespace(userInput);
@@ -185,7 +187,7 @@ export class Typeahead extends React.Component {
             onKeyDown={this.onKeyDown}
             type="text"
           />
-          {goodInput
+          {goodInput && !escaped
             ? filteredCandidates.map(({ start, rest }, idx) => (
                 <Suggestion
                   key={idx}
