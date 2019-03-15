@@ -20,8 +20,8 @@ const isEmptyOrWhitespace = text => {
 
 /**
  * Case insensitively check if candidate begins with "start"
- * @arg {string} start - substring to search for
- * @arg {string} candidate - string to search
+ * @param {string} start - substring to search for
+ * @param {string} candidate - string to search
  */
 const startsWithCaseInsensitive = (start, candidate) => {
   return candidate.toUpperCase().startsWith(start.toUpperCase());
@@ -38,8 +38,8 @@ const startsWithCaseInsensitive = (start, candidate) => {
  * Creates parsed list containing candidates which start with the user input.
  * Bad user input (empty or all whitespace) is treated as non-match,
  *
- * @arg {string[]} candidates - list of strings to filter
- * @arg {string} userInput - search string
+ * @param {string[]} candidates - list of strings to filter
+ * @param {string} userInput - search string
  * @returns {Candidate} - list of matching candidates
  */
 const filterCandidates = (candidates, userInput) => {
@@ -57,14 +57,32 @@ const filterCandidates = (candidates, userInput) => {
 };
 
 /**
+ * Detects whether an event was a tab forward
+ * @param {SyntheticEvent} e - React Keyboard Event
+ */
+const isTabForward = e => {
+  return e.keyCode === 9 && e.shiftKey === false;
+};
+
+/**
+ * Detects whether an event was a tab backward
+ * @param {SyntheticEvent} e - React Keyboard Event
+ */
+const isTabBackward = e => {
+  return e.keyCode === 9 && e.shiftKey === true;
+};
+
+/**
  * Represents a typeahead suggestion
  */
 class Suggestion extends React.Component {
-  componentDidMount() {
-    const { focused } = this.props;
+  onKeyDown(e) {
+    if (isTabForward(e)) {
+      //
+    }
 
-    if (focused) {
-      this.suggestionRef.focus();
+    if (isTabBackward(e)) {
+      //
     }
   }
 
@@ -74,9 +92,7 @@ class Suggestion extends React.Component {
     // tabIndex makes these divs focusable.
     return (
       <div
-        ref={r => {
-          this.suggestionRef = r;
-        }}
+        tabIndex="0"
         className={classnames(className, 'suggestion', { focused })}>
         {children}
       </div>
@@ -104,8 +120,7 @@ export class Typeahead extends React.Component {
   state = {
     debug: 'nothing yet!',
     userInput: '',
-    filteredCandidates: [],
-    focusIndex: -1 // this has been tabbed to
+    filteredCandidates: []
   };
 
   /**
@@ -127,17 +142,15 @@ export class Typeahead extends React.Component {
     // allows default tab focusing behavior when there are no results
     if (false === hasMatch) return;
 
-    e.preventDefault(); // a match exists -- no shifting focus
+    //e.preventDefault(); // a match exists -- no shifting focus
 
     if (e.shiftKey) {
       // backwards through results
-
       //if ()
-
-      this.setState(update('focusIndex', add(-1)));
+      //this.setState(update('focusIndex', add(-1)));
     } else {
       // forwards through the results
-      this.setState(update('focusIndex', add(1)));
+      //this.setState(update('focusIndex', add(1)));
     }
   }
 
@@ -175,15 +188,13 @@ export class Typeahead extends React.Component {
    */
   render() {
     const { className } = this.props;
-    const { userInput, filteredCandidates, focusIndex } = this.state;
+    const { userInput, filteredCandidates } = this.state;
 
     const goodInput = !isEmptyOrWhitespace(userInput);
 
     return (
       <div>
-        <div>
-          Debug output: fidx {focusIndex}, len {filteredCandidates.length}
-        </div>
+        <div>Debug output: len {filteredCandidates.length}</div>
         <div className={classnames(className, 'suggestion-box')}>
           <input
             value={userInput}
@@ -196,7 +207,7 @@ export class Typeahead extends React.Component {
           />
           {goodInput
             ? filteredCandidates.map(({ start, rest }, idx) => (
-                <Suggestion key={idx} focused={idx === focusIndex}>
+                <Suggestion key={idx}>
                   <b>{start}</b>
                   {rest}
                 </Suggestion>
