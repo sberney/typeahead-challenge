@@ -6,10 +6,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import set from 'lodash/fp/set';
-import update from 'lodash/fp/update';
-import compose from 'lodash/fp/compose';
-import add from 'lodash/fp/add';
 
 import { isTabForward, isEscape, isEnter } from './detectKeys';
 import './styles.css';
