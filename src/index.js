@@ -1,31 +1,19 @@
+/**
+ * Typeahead Challenge module.
+ * @module typeahead-challenge
+ *
+ * Documentation using JSDoc
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
-import './styles.css';
+import { Typeahead } from './Typeahead';
+import { StopsPropagation } from './StopsPropagation';
 
-/**
- * Please note that this app is intentionally in a broken state.  You must create your
- * component and add it to `ReactDOM.render` (at the bottom of this file) to get started.
- */
-
-/**
- *
- */
-class Typeahead extends React.Component {
-  static propTypes = {
-    list: PropTypes.arrayOf(PropTypes.string).isRequired,
-    className: PropTypes.string
-  };
-
-  render() {
-    const { list, className } = this.props;
-
-    return <div>Hello world!</div>;
-  }
-}
-
-/**
+/*
  * Using React create a `Typeahead` component that takes `list` and `classname` props.
  * Be sure that the component utilizes propTypes and any other best practices
  * that you follow. Use the `carBrands` list which is defined below as the
@@ -64,9 +52,23 @@ class Typeahead extends React.Component {
  * 6. Clicking outside the input or the list should close the list.
  */
 
-const App = () => <Typeahead className="typeahead" list={carBrands} />;
-
 /**
+ * Simple demo of Typeahead functionality.
+ */
+const App = () => (
+  <div>
+    <p>
+      <div>
+        <StopsPropagation />
+      </div>
+      <div>Before typeahead</div>
+    </p>
+    <Typeahead className="App" list={carBrands} />
+    <p tabIndex="0">After typeahead (focusable)</p>
+  </div>
+);
+
+/*
  * Please don't change the `carBrands` list.
  */
 const carBrands = [

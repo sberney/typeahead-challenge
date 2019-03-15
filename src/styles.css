@@ -1,4 +1,39 @@
+* {
+  box-sizing: border-box;
+}
+
 .App {
   font-family: sans-serif;
   text-align: center;
+}
+
+.suggestion-box {
+  position: relative;
+}
+
+.suggestion-box > * {
+  padding: 0.25rem;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  width: 100%;
+  position: relative;
+}
+
+.suggestion-box input {
+  border-top: 1px solid black;
+}
+
+.suggestion {
+  text-align: left;
+  cursor: pointer;
+}
+
+.suggestion.focused {
+  color: red;
+}
+
+.suggestion:hover {
+  background-color: grey;
+  color: white;
 }

@@ -7,7 +7,9 @@
   "dependencies": {
     "react": "16.5.2",
     "react-dom": "16.5.2",
-    "react-scripts": "2.0.3"
+    "react-scripts": "2.0.3",
+    "classnames": "2.2.6",
+    "lodash": "4.17.11"
   },
   "devDependencies": {},
   "scripts": {
