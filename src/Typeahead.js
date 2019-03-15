@@ -57,18 +57,48 @@ const filterCandidates = (candidates, userInput) => {
 };
 
 /**
+ * Detects whether an event was a tab forward
+ * @param {SyntheticEvent} e - React Keyboard Event
+ */
+const isTabForward = e => {
+  return e.keyCode === 9 && e.shiftKey === false;
+};
+
+/**
+ * Detects whether an event was a tab backward
+ * @param {SyntheticEvent} e - React Keyboard Event
+ */
+const isTabBackward = e => {
+  return e.keyCode === 9 && e.shiftKey === true;
+};
+
+/**
  * Represents a typeahead suggestion
  */
-const Suggestion = ({ children, className, focused }) => {
-  // tabIndex makes these divs focusable.
-  return (
-    <div
-      tabIndex="5"
-      className={classnames(className, 'suggestion', { focused })}>
-      {children}
-    </div>
-  );
-};
+class Suggestion extends React.Component {
+  onKeyDown(e) {
+    if (isTabForward(e)) {
+      //
+    }
+
+    if (isTabBackward(e)) {
+      //
+    }
+  }
+
+  render() {
+    const { children, className, focused } = this.props;
+
+    // tabIndex makes these divs focusable.
+    return (
+      <div
+        tabIndex="0"
+        className={classnames(className, 'suggestion', { focused })}>
+        {children}
+      </div>
+    );
+  }
+}
 
 /**
  * The only true Typeahead
@@ -167,7 +197,6 @@ export class Typeahead extends React.Component {
         <div>Debug output: len {filteredCandidates.length}</div>
         <div className={classnames(className, 'suggestion-box')}>
           <input
-            tabIndex="5"
             value={userInput}
             ref={input => {
               this.input = input;
