@@ -74,11 +74,9 @@ class Suggestion_ extends React.Component {
   }
 
   onKeyDown(e) {
-    const { onTabForward } = this.props;
-
-    if (isTabForward(e)) {
-      onTabForward(e);
-    }
+    const { onTabForward, onEscape } = this.props;
+    if (isTabForward(e)) onTabForward(e);
+    if (isEscape(e)) onEscape(e);
   }
 
   render() {
@@ -199,6 +197,10 @@ export class Typeahead extends React.Component {
                       e.preventDefault();
                       firstCandidateRef.current.focus();
                     }
+                  }}
+                  onEscape={e => {
+                    this.setState({ escaped: true });
+                    this.input.focus();
                   }}>
                   <b>{start}</b>
                   {rest}
