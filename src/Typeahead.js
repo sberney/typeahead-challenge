@@ -11,6 +11,7 @@ import update from 'lodash/fp/update';
 import compose from 'lodash/fp/compose';
 import add from 'lodash/fp/add';
 
+import { isTabForward, isTabBackward, isEscape } from './detectKeys';
 import './styles.css';
 
 const isEmptyOrWhitespace = text => {
@@ -53,22 +54,6 @@ const filterCandidates = (candidates, userInput) => {
     start: item.substring(0, userInput.length),
     rest: item.substring(userInput.length)
   }));
-};
-
-/**
- * Detects whether an event was a tab forward
- * @param {SyntheticEvent} e - React Keyboard Event
- */
-const isTabForward = e => {
-  return e.keyCode === 9 && e.shiftKey === false;
-};
-
-/**
- * Detects whether an event was a tab backward
- * @param {SyntheticEvent} e - React Keyboard Event
- */
-const isTabBackward = e => {
-  return e.keyCode === 9 && e.shiftKey === true;
 };
 
 /**

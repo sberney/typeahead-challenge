@@ -9,7 +9,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Typeahead } from './Typeahead';
-import { StopsPropagation } from './StopsPropagation';
+import { StopsPropagation } from './devHelpers/StopsPropagation';
 
 /*
  * Using React create a `Typeahead` component that takes `list` and `classname` props.
